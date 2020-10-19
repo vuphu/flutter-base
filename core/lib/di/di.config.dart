@@ -8,8 +8,8 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../datasources/remote/rest/apis/github_user_api.dart';
-import '../blocs/loads/base/bloc.dart';
 import '../action/load_github_user.dart';
+import '../blocs/render/render_bloc.dart';
 import '../repositories/repository.dart';
 
 /// adds generated dependencies
@@ -21,9 +21,9 @@ GetIt $initGetIt(
   EnvironmentFilter environmentFilter,
 }) {
   final gh = GetItHelper(get, environment, environmentFilter);
-  gh.factory<LoadBloc>(() => LoadBloc());
+  gh.factory<RenderBloc>(() => RenderBloc());
   gh.lazySingleton<LoadGithubUserAction>(
-      () => LoadGithubUserAction(get<Repository>()));
+      () => LoadGithubUserActionImpl(get<Repository>()));
 
   // Eager singletons must be registered in the right order
   gh.singleton<GithubUserAPI>(GithubUserAPIImpl());

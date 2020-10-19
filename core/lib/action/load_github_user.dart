@@ -1,14 +1,20 @@
 import 'package:core/models/github_user.dart';
 import 'package:core/repositories/repository.dart';
 import 'package:injectable/injectable.dart';
+import 'package:core/config/constants/constants.dart' as constants;
 
-@lazySingleton
-class LoadGithubUserAction {
+abstract class LoadGithubUserAction {
+  Future<List<GithubUser>> execute({int offset, int limit});
+}
+
+@LazySingleton(as: LoadGithubUserAction)
+class LoadGithubUserActionImpl implements LoadGithubUserAction {
   final Repository repository;
 
-  LoadGithubUserAction(this.repository);
+  LoadGithubUserActionImpl(this.repository);
 
-  Future<List<GithubUser>> execute(int offset, int limit) {
+  @override
+  Future<List<GithubUser>> execute({int offset = 0, int limit = constants.Limit.thread}) {
     return repository.getGithubUsers(offset, limit);
   }
 }

@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "2.5.0-nullsafety.1"
   bloc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: bloc
       url: "https://pub.dartlang.org"
@@ -140,7 +140,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_bloc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
@@ -247,6 +247,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
+  pagination_view:
+    dependency: "direct main"
+    description:
+      name: pagination_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3+2"
   path:
     dependency: transitive
     description:

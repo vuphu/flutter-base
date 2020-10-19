@@ -13,10 +13,10 @@ class GithubUserAPIImpl implements GithubUserAPI {
   @override
   Future<List<GithubUser>> getGithubUsers(int offset, int limit) async {
     final response = await http.get(
-        "https://api.github.com/users?per_page=$limit&page=${offset / limit}");
+        "https://api.github.com/search/users?q=a&per_page=$limit&page=${1 + offset ~/ limit}");
     if (response.statusCode == 200) {
-      return (jsonDecode(response.body) as List).map((it) => GithubUser.fromJson(it)).toList();
+      return (jsonDecode(response.body)['items'] as List).map((it) => GithubUser.fromJson(it)).toList();
     }
-    return Future.error("");
+    return Future.error("Some things went wrong");
   }
 }

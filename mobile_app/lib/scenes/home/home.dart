@@ -1,10 +1,9 @@
-import 'package:core/blocs/loads/base/bloc.dart';
-import 'package:core/blocs/loads/base/state.dart';
-import 'package:core/blocs/loads/extends/event.dart';
-import 'package:core/blocs/loads/extends/state.dart';
+import 'package:core/action/load_github_user.dart';
+import 'package:core/di/di.dart';
+import 'package:core/models/github_user.dart';
+import 'package:core/widgets/list_view/pagination_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_app/widgets/github_user.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,63 +17,43 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  void initState() {
-    BlocProvider.of<LoadBloc>(context).add(LoadingGithubUsersEvent());
-
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 100.0,
-              floating: false,
-              pinned: false,
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text(widget.title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    )),
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 100.0,
+                floating: false,
+                pinned: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(widget.title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      )),
+                ),
+              )
+            ];
+          },
+          body: Builder(
+            builder: (context) => PaginationView<GithubUser>(
+              pageFetch: _pageFetch,
+              itemBuilder: (context, item, index) => GithubUserWidget(
+                githubUser: item,
               ),
+              onError: (error) {
+                final snackBar = SnackBar(content: Text(error), duration: Duration(milliseconds: 1000), backgroundColor: Colors.red);
+                Scaffold.of(context).showSnackBar(snackBar);
+              },
+              isPullToRequest: true,
             ),
-          ];
-        },
-        body: RefreshIndicator(
-          onRefresh: () async =>
-              BlocProvider.of<LoadBloc>(context).add(LoadingGithubUsersEvent()),
-          child: BlocBuilder<LoadBloc, LoadState>(
-            builder: (context, state) {
-              if (state is LoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                );
-              } else if (state is LoadGithubUserSuccessState) {
-                return NotificationListener<OverscrollIndicatorNotification>(
-                    onNotification: (overScroll) {
-                      overScroll.disallowGlow();
-                      return true;
-                    },
-                    child: ListView.builder(
-                      itemCount: state.data.length,
-                      itemBuilder: (context, index) =>
-                          GithubUserWidget(githubUser: state.data[index]),
-                    ));
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ),
-      ),
+          )),
     );
+  }
+
+  Future<List<GithubUser>> _pageFetch(int currentPosition) {
+    return getIt<LoadGithubUserAction>().execute(offset: currentPosition);
   }
 }
