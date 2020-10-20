@@ -19,41 +19,26 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 100.0,
-                floating: false,
-                pinned: false,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Text(widget.title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      )),
-                ),
-              )
-            ];
-          },
-          body: Builder(
-            builder: (context) => PaginationView<GithubUser>(
-              pageFetch: _pageFetch,
-              itemBuilder: (context, item, index) => GithubUserWidget(
-                githubUser: item,
-              ),
-              onError: (error) {
-                final snackBar = SnackBar(content: Text(error), duration: Duration(milliseconds: 1000), backgroundColor: Colors.red);
-                Scaffold.of(context).showSnackBar(snackBar);
-              },
-              isPullToRequest: true,
-            ),
-          )),
-    );
+        body: Builder(
+      builder: (context) => PaginationView<GithubUser>(
+        pageFetch: _pageFetch,
+        itemBuilder: (context, item, index) => GithubUserWidget(
+          githubUser: item,
+        ),
+        onError: (error) {
+          final snackBar = SnackBar(
+              content: Text(error),
+              duration: Duration(milliseconds: 1000),
+              backgroundColor: Colors.red);
+          Scaffold.of(context).showSnackBar(snackBar);
+        },
+        isPullToRequest: true,
+      ),
+    ));
   }
 
   Future<List<GithubUser>> _pageFetch(int currentPosition) {
-    return getIt<LoadGithubUserAction>().execute(offset: currentPosition);
+    return getIt<LoadGithubUserAction>()
+        .execute(query: "vuphu", offset: currentPosition);
   }
 }

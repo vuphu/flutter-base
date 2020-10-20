@@ -11,5 +11,4 @@ class RenderBloc extends Bloc<RenderEvent, RenderState> {
   Stream<RenderState> mapEventToState(RenderEvent event) async* {
     yield RenderState();
   }
-
 }

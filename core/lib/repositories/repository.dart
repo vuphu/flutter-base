@@ -3,7 +3,7 @@ import 'package:core/models/github_user.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class Repository {
-  Future<List<GithubUser>> getGithubUsers(int offset, int limit);
+  Future<List<GithubUser>> getGithubUsers(String query, int offset, int limit);
 }
 
 @Singleton(as: Repository)
@@ -13,7 +13,7 @@ class RepositoryImpl implements Repository {
   RepositoryImpl(this.githubUserAPI);
 
   @override
-  Future<List<GithubUser>> getGithubUsers(int offset, int limit) {
-    return githubUserAPI.getGithubUsers(offset, limit);
+  Future<List<GithubUser>> getGithubUsers(String query, int offset, int limit) {
+    return githubUserAPI.getGithubUsers(query, offset, limit);
   }
 }

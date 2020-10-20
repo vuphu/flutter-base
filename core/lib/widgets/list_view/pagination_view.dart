@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'package:core/blocs/render/render_bloc.dart';
 import 'package:core/blocs/render/render_event.dart';
 import 'package:core/blocs/render/render_state.dart';
-import 'package:core/blocs/single_action/single_action_bloc.dart';
-import 'package:core/blocs/single_action/single_action_event.dart';
-import 'package:core/blocs/single_action/singlel_action_state.dart';
+import 'package:core/blocs/runnable/runnable_bloc.dart';
+import 'package:core/blocs/runnable/runnable_event.dart';
+import 'package:core/blocs/runnable/runnable_state.dart';
 import 'package:core/di/di.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +18,22 @@ class PaginationView<T> extends StatefulWidget {
   final int loadingOffset;
   final bool isPullToRequest;
 
-  PaginationView({Key key, this.pageFetch, this.itemBuilder, this.onError, this.loadingOffset = 200, this.isPullToRequest = false}) : super(key: key);
+  PaginationView(
+      {Key key,
+      this.pageFetch,
+      this.itemBuilder,
+      this.onError,
+      this.loadingOffset = 200,
+      this.isPullToRequest = false})
+      : super(key: key);
 
   @override
   _PaginationViewState<T> createState() => _PaginationViewState<T>();
 }
 
 class _PaginationViewState<T> extends State<PaginationView<T>> {
-  SingleActionBloc<List<T>> _callActionBloc = SingleActionBloc<List<T>>();
-  RenderBloc _renderListViewBloc = getIt.get<RenderBloc>();
+  RunnableBloc<List<T>> _runnableBloc = RunnableBloc<List<T>>();
+  RenderBloc _renderBloc = getIt.get<RenderBloc>();
 
   ScrollController _scrollController;
 
@@ -45,33 +50,35 @@ class _PaginationViewState<T> extends State<PaginationView<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SingleActionBloc, SingleActionState>(
-      cubit: _callActionBloc,
-      listener: (context, state) {
-        if (state is SingleActionSuccessState) {
-          if (state.data.isEmpty) {
-            _isStop = true;
+    return BlocListener<RunnableBloc<List<T>>, RunnableState>(
+        cubit: _runnableBloc,
+        listener: (context, state) {
+          if (state is RunSuccessState<List<T>>) {
+            if (state.data.isEmpty) {
+              _isStop = true;
+            }
+            _items.addAll(state.data);
           }
-          _items.addAll(state.data);
-        }
-        if (state is SingleActionErrorState) {
-          this.widget.onError(state.error);
-        }
-        _stopLoading();
-      },
-      child: BlocBuilder<RenderBloc, RenderState>(
-        cubit: _renderListViewBloc,
-        builder: (context, state) {
-          if (widget.isPullToRequest) {
-            return RefreshIndicator(child: _buildListView(), onRefresh: () async {
-              _items.clear();
-              _callFetch();
-            });
+          if (state is RunErrorState) {
+            this.widget.onError(state.error);
           }
-          return _buildListView();
+          _stopLoading();
         },
-      )
-    );
+        child: BlocBuilder<RenderBloc, RenderState>(
+          cubit: _renderBloc,
+          builder: (context, state) {
+            if (widget.isPullToRequest) {
+              return RefreshIndicator(
+                  child: _buildListView(),
+                  onRefresh: () async {
+                    _items.clear();
+                    _isStop = false;
+                    _callFetch();
+                  });
+            }
+            return _buildListView();
+          },
+        ));
   }
 
   Widget _buildListView() {
@@ -88,29 +95,36 @@ class _PaginationViewState<T> extends State<PaginationView<T>> {
   }
 
   _callFetch() {
-    _callActionBloc..add(SingleActionEvent(_pageFetch));
+    _runnableBloc..add(RunEvent(_pageFetch));
     _startLoading();
   }
 
   _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
-    if (maxScroll - currentScroll <= this.widget.loadingOffset && !_isLoading && !_isStop) {
+    if (maxScroll - currentScroll <= this.widget.loadingOffset &&
+        !_isLoading &&
+        !_isStop) {
       _callFetch();
     }
   }
 
-  Future<List<T>> _pageFetch() {
-    return this.widget.pageFetch(_items.length);
-  }
-
   _startLoading() {
     _isLoading = true;
-    _renderListViewBloc..add(RenderEvent());
+    setState(() {
+    });
+    //_renderBloc..add(RenderEvent());
   }
 
   _stopLoading() {
     _isLoading = false;
-    _renderListViewBloc.add(RenderEvent());
+    setState(() {
+
+    });
+    //_renderBloc.add(RenderEvent());
+  }
+
+  Future<List<T>> _pageFetch() {
+    return this.widget.pageFetch(_items.length);
   }
 }

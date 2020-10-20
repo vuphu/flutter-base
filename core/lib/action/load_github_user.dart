@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:core/config/constants/constants.dart' as constants;
 
 abstract class LoadGithubUserAction {
-  Future<List<GithubUser>> execute({int offset, int limit});
+  Future<List<GithubUser>> execute({String query, int offset, int limit});
 }
 
 @LazySingleton(as: LoadGithubUserAction)
@@ -14,7 +14,7 @@ class LoadGithubUserActionImpl implements LoadGithubUserAction {
   LoadGithubUserActionImpl(this.repository);
 
   @override
-  Future<List<GithubUser>> execute({int offset = 0, int limit = constants.Limit.thread}) {
-    return repository.getGithubUsers(offset, limit);
+  Future<List<GithubUser>> execute({String query = "", int offset = 0, int limit = constants.Limit.thread}) {
+    return repository.getGithubUsers(query, offset, limit);
   }
 }
