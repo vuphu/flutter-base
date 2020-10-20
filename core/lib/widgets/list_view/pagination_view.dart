@@ -35,8 +35,6 @@ class _PaginationViewState<T> extends State<PaginationView<T>> {
   RunnableBloc<List<T>> _runnableBloc = RunnableBloc<List<T>>();
   RenderBloc _renderBloc = getIt.get<RenderBloc>();
 
-  ScrollController _scrollController;
-
   List<T> _items = List();
   bool _isLoading = true;
   bool _isStop = false;
@@ -44,7 +42,6 @@ class _PaginationViewState<T> extends State<PaginationView<T>> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController()..addListener((_onScroll));
     _callFetch();
   }
 
@@ -83,9 +80,13 @@ class _PaginationViewState<T> extends State<PaginationView<T>> {
 
   Widget _buildListView() {
     return ListView.builder(
-      controller: _scrollController,
+      physics: AlwaysScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         if (index < _items.length) {
+          if (index == _items.length - 1 && !_isLoading &&
+              !_isStop) {
+            _callFetch();
+          }
           return this.widget.itemBuilder(context, _items[index], index);
         }
         return LoadingItem().build();
@@ -99,29 +100,14 @@ class _PaginationViewState<T> extends State<PaginationView<T>> {
     _startLoading();
   }
 
-  _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    if (maxScroll - currentScroll <= this.widget.loadingOffset &&
-        !_isLoading &&
-        !_isStop) {
-      _callFetch();
-    }
-  }
-
   _startLoading() {
     _isLoading = true;
-    setState(() {
-    });
-    //_renderBloc..add(RenderEvent());
+    _renderBloc..add(RenderEvent());
   }
 
   _stopLoading() {
     _isLoading = false;
-    setState(() {
-
-    });
-    //_renderBloc.add(RenderEvent());
+    _renderBloc.add(RenderEvent());
   }
 
   Future<List<T>> _pageFetch() {
