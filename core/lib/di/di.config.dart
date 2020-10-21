@@ -4,10 +4,10 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+import 'package:core/datasources/remote/apis/github_user.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../datasources/remote/rest/apis/github_user_api.dart';
 import '../action/load_github_user.dart';
 import '../blocs/render/render_bloc.dart';
 import '../repositories/repository.dart';

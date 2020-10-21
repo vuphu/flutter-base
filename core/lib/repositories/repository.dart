@@ -1,4 +1,4 @@
-import 'package:core/datasources/remote/rest/apis/github_user_api.dart';
+import 'package:core/datasources/remote/apis/github_user.dart';
 import 'package:core/models/github_user.dart';
 import 'package:injectable/injectable.dart';
 
