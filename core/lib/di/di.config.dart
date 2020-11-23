@@ -8,7 +8,7 @@ import 'package:core/datasources/remote/apis/github_user.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../action/load_github_user.dart';
+import '../actions/load_github_user.dart';
 import '../blocs/render/render_bloc.dart';
 import '../repositories/repository.dart';
 

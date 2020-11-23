@@ -14,7 +14,7 @@ class LoadGithubUserActionImpl implements LoadGithubUserAction {
   LoadGithubUserActionImpl(this.repository);
 
   @override
-  Future<List<GithubUser>> execute({String query = "", int offset = 0, int limit = constants.Limit.thread}) {
+  Future<List<GithubUser>> execute({String query = "", int offset = 0, int limit = constants.Limit.NUMBER_OF_RECORDS}) {
     return repository.getGithubUsers(query, offset, limit);
   }
 }
