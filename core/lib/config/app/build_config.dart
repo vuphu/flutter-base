@@ -1,7 +1,7 @@
 import 'environment/enviroment.dart';
 
 class BuildConfig {
-  static Environment _environment;
+  static late Environment _environment;
 
   static initialize(Environment environment) {
     BuildConfig._environment = environment;

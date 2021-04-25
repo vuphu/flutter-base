@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class RestAPI {
@@ -8,7 +7,10 @@ class RestAPI {
 
   factory RestAPI() => _instance;
 
-  String _insertVariablesIntoEndpoint(String endpoint, Map<String, dynamic> variables) {
+  String _insertVariablesIntoEndpoint(
+    String endpoint,
+    Map<String, dynamic> variables,
+  ) {
     variables.forEach((key, value) {
       endpoint = endpoint.replaceAll("\${$key}", value.toString());
     });
@@ -16,6 +18,6 @@ class RestAPI {
   }
 
   Future<http.Response> get(String endpoint, Map<String, dynamic> headers) {
-    return http.get(_insertVariablesIntoEndpoint(endpoint, headers));
+    return http.get(Uri.parse(_insertVariablesIntoEndpoint(endpoint, headers)));
   }
 }

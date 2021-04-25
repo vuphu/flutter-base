@@ -1,13 +1,15 @@
-import 'package:core/action/load_github_user.dart';
-import 'package:core/di/di.dart';
-import 'package:core/models/github_user.dart';
-import 'package:core/widgets/list_view/pagination_view.dart';
+import 'package:core/base/blocs.dart';
+import 'package:core/config/constants/limit.dart';
+import 'package:core/domain/models/github_user.dart';
+import 'package:core/widgets/blank_data_view.dart';
+import 'package:core/widgets/pagination_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/scenes/home/home_presenter.dart';
 import 'package:mobile_app/widgets/github_user.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -16,29 +18,51 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late PaginationViewController _paginationController;
+  late HomePresenter _homePresenter;
+
+  @override
+  void initState() {
+    super.initState();
+    _paginationController = PaginationViewController();
+    _homePresenter = HomePresenter()..onStart();
+
+    _homePresenter.fetchUserBloc.stream.listen((state) {
+      if (state is DataChangedState<List<GithubUser>>) {
+        _paginationController.addItems(
+          state.data,
+          isStopLoadMore: state.data.length < Limit.NUMBER_OF_RECORDS,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _homePresenter.onDestroy();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Builder(
-      builder: (context) => PaginationView<GithubUser>(
-        pageFetch: _pageFetch,
-        itemBuilder: (context, item, index) => GithubUserWidget(
-          githubUser: item,
-        ),
-        onError: (error) {
-          final snackBar = SnackBar(
-              content: Text(error),
-              duration: Duration(milliseconds: 1000),
-              backgroundColor: Colors.red);
-          Scaffold.of(context).showSnackBar(snackBar);
+      body: PaginationView(
+        onTap: (index, item) {
+          // No-op
         },
-        isPullToRequest: true,
+        onLoad: (currentPosition) {
+          _homePresenter.fetchUserBloc.fetch("vuphu", currentPosition);
+        },
+        blankDataView: BlankDataView(),
+        onCreateView: (index, item) {
+          if (item is GithubUser) {
+            return GithubUserWidget(data: item);
+          }
+          return Container();
+        },
+        controller: _paginationController,
+        isAutoLoading: true,
       ),
-    ));
-  }
-
-  Future<List<GithubUser>> _pageFetch(int currentPosition) {
-    return getIt<LoadGithubUserAction>()
-        .execute(query: "vuphu", offset: currentPosition);
+    );
   }
 }

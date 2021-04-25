@@ -1,11 +1,14 @@
-import 'package:core/models/github_user.dart';
+import 'package:core/domain/models/github_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GithubUserWidget extends StatefulWidget {
-  GithubUserWidget({Key key, this.githubUser}) : super(key: key);
+  GithubUserWidget({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
-  final GithubUser githubUser;
+  final GithubUser data;
 
   @override
   _GithubUserWidgetState createState() => _GithubUserWidgetState();
@@ -19,9 +22,9 @@ class _GithubUserWidgetState extends State<GithubUserWidget> {
         padding: const EdgeInsets.all(4),
         child: InkWell(
           child: ListTile(
-            title: Text(widget.githubUser.login),
-            subtitle: Text(widget.githubUser.id.toString()),
-            leading: Image.network(widget.githubUser.avatarUrl),
+            title: Text(widget.data.login),
+            subtitle: Text(widget.data.id.toString()),
+            leading: Image.network(widget.data.avatarUrl),
           ),
           onTap: () {},
         ),
