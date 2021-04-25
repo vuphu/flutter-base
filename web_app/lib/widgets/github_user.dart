@@ -17,17 +17,15 @@ class GithubUserWidget extends StatefulWidget {
 class _GithubUserWidgetState extends State<GithubUserWidget> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: InkWell(
-          child: ListTile(
-            title: Text(widget.data.login),
-            subtitle: Text(widget.data.id.toString()),
-            leading: Image.network(widget.data.avatarUrl),
-          ),
-          onTap: () {},
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: InkWell(
+        child: ListTile(
+          title: Text(widget.data.login),
+          subtitle: Text(widget.data.id.toString()),
+          leading: Image.network(widget.data.avatarUrl),
         ),
+        onTap: () {},
       ),
     );
   }

@@ -9,7 +9,10 @@ import 'package:mobile_app/scenes/home/home_presenter.dart';
 import 'package:mobile_app/widgets/github_user.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key, required this.title}) : super(key: key);
+  HomePage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   final String title;
 
@@ -39,8 +42,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    super.dispose();
     _homePresenter.onDestroy();
+    super.dispose();
   }
 
   @override
