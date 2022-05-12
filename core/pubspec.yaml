@@ -1,24 +1,23 @@
 name: core
 description: A new core Flutter package.
 version: 0.0.1
-author:
+author: vuphu
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  bloc: ^7.0.0
-  flutter_bloc: ^7.0.0
-  equatable: ^2.0.0
-  get_it: ^6.1.1
-  injectable: ^1.2.2
-  graphql_flutter: ^5.0.0-nullsafety.2
-  gql: ^0.13.0-nullsafety.2
-  json_annotation: ^4.0.1
-  http: ^0.13.1
+  bloc: ^8.0.1
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
+  get_it: ^7.2.0
+  injectable: ^1.5.3
+  graphql_flutter: ^5.1.0
+  gql: ^0.13.1
+  json_annotation: ^4.5.0
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
