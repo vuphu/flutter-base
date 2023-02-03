@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class BlankDataView extends StatelessWidget {
   @override
@@ -19,7 +18,7 @@ class BlankDataView extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          Text("Không có dữ liệu", style: Theme.of(context).textTheme.bodyText1)
+          Text("Empty data", style: Theme.of(context).textTheme.bodyMedium)
         ],
       ),
     );

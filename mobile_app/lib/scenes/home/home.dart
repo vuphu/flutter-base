@@ -3,7 +3,6 @@ import 'package:core/config/constants/limit.dart';
 import 'package:core/domain/models/github_user.dart';
 import 'package:core/widgets/blank_data_view.dart';
 import 'package:core/widgets/pagination_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/scenes/home/home_presenter.dart';
 import 'package:mobile_app/widgets/github_user.dart';

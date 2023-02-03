@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -81,8 +80,8 @@ class _PaginationViewState extends State<PaginationView> {
     }
 
     return Scrollbar(
-      isAlwaysShown: true,
-      showTrackOnHover: true,
+      thumbVisibility: true,
+      trackVisibility: true,
       child: ListView.builder(
         itemBuilder: (context, index) {
           if (index < items.length) {

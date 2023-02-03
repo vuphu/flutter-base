@@ -1,5 +1,4 @@
 import 'package:core/domain/models/github_user.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GithubUserWidget extends StatefulWidget {
