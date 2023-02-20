@@ -1,6 +1,6 @@
 import 'package:core/base/blocs.dart';
 import 'package:core/config/constants/limit.dart';
-import 'package:core/domain/models/github_user.dart';
+import 'package:core/modules/users/models/github_user.dart';
 import 'package:core/widgets/blank_data_view.dart';
 import 'package:core/widgets/pagination_view.dart';
 import 'package:flutter/material.dart';
