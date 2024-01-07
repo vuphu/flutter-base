@@ -118,7 +118,7 @@ class _PaginationViewState extends State<PaginationView> {
           },
           child: Center(
             child: Text(
-              "Hiển thị thêm",
+              "Load More",
               style: TextStyle(fontSize: 20),
             ),
           ),

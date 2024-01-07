@@ -26,8 +26,8 @@ abstract class BaseBloc extends Cubit<BaseState> {
   BaseBloc() : super(InitializedState());
 }
 
-mixin SingleBlocMixin on BaseBloc {
-  void single<T>(
+mixin BlocMixin on BaseBloc {
+  void execute<T>(
     Future<T> Function() action, {
     required BaseState Function(T data) onSuccess,
   }) async {
