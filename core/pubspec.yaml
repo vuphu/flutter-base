@@ -17,6 +17,7 @@ dependencies:
   gql: ^0.14.0
   json_annotation: ^4.8.0
   http: ^0.13.5
+  riverpod: ^3.0.0-dev.3
 
 dev_dependencies:
   flutter_test:

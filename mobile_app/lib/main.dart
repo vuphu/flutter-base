@@ -2,12 +2,13 @@ import 'package:core/config/app/build_config.dart';
 import 'package:core/config/app/environment/prod_environment.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_app/scenes/home/home.dart';
 
 void main() async {
   await initialCore();
   BuildConfig.initialize(new ProdEnvironment());
-  runApp(MobileApp());
+  runApp(ProviderScope(child: MobileApp()));
 }
 
 class MobileApp extends StatelessWidget {
