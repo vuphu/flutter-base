@@ -1,19 +1,34 @@
-import 'package:core/base/presenter.dart';
+import 'package:core/common/base/presenter.dart';
 import 'package:core/di/di.dart';
-import 'package:core/modules/users/blocs/fetch_users_bloc.dart';
+import 'package:core/modules/users/user_module.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:core/config/constants/limit.dart';
 
-class HomePresenter extends BasePresenter {
-  late FetchUserBloc fetchUserBloc;
+class HomePresenter extends BasePresenter with WrapErrorMixin {
+  late UserService _userService;
+
+  late ValueNotifier<List<User>> usersNotifier;
 
   @override
   void onStart() {
     super.onStart();
-    fetchUserBloc = getIt<FetchUserBloc>();
+    _userService = getIt<UserService>();
+    usersNotifier = ValueNotifier([]);
   }
 
   @override
   void onDestroy() {
     super.onDestroy();
-    fetchUserBloc.close();
+  }
+
+  Future<void> fetchUsers(String query, int currentPosition) async {
+    await wrapError(
+      () => _userService.getGithubUsers(
+        query,
+        currentPosition,
+        Limit.NUMBER_OF_RECORDS,
+      ),
+      onSuccess: (data) => usersNotifier.value = data,
+    );
   }
 }

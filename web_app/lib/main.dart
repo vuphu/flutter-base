@@ -2,7 +2,7 @@ import 'package:core/config/app/build_config.dart';
 import 'package:core/config/app/environment/prod_environment.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:web_app/scenes/home/home.dart';
+import 'package:web_app/scenes/home/home_scene.dart';
 
 void main() async {
   await initialCore();
