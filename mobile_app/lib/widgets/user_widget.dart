@@ -1,19 +1,19 @@
-import 'package:core/modules/users/models/github_user.dart';
+import 'package:core/modules/users/models/user.dart';
 import 'package:flutter/material.dart';
 
-class GithubUserWidget extends StatefulWidget {
-  GithubUserWidget({
+class UserWidget extends StatefulWidget {
+  UserWidget({
     Key? key,
     required this.data,
   }) : super(key: key);
 
-  final GithubUser data;
+  final User data;
 
   @override
-  _GithubUserWidgetState createState() => _GithubUserWidgetState();
+  _UserWidgetState createState() => _UserWidgetState();
 }
 
-class _GithubUserWidgetState extends State<GithubUserWidget> {
+class _UserWidgetState extends State<UserWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -1,11 +1,10 @@
-import 'package:core/base/blocs.dart';
 import 'package:core/config/constants/limit.dart';
-import 'package:core/modules/users/models/github_user.dart';
+import 'package:core/modules/users/models/user.dart';
 import 'package:core/widgets/blank_data_view.dart';
 import 'package:core/widgets/pagination_view.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/scenes/home/home_presenter.dart';
-import 'package:mobile_app/widgets/github_user.dart';
+import 'package:mobile_app/widgets/user_widget.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -29,20 +28,13 @@ class _HomePageState extends State<HomePage> {
     _paginationController = PaginationViewController();
     _homePresenter = HomePresenter()..onStart();
 
-    _homePresenter.fetchUserBloc.stream.listen((state) {
-      if (state is DataChangedState<List<GithubUser>>) {
-        _paginationController.addItems(
-          state.data,
-          isStopLoadMore: state.data.length < Limit.NUMBER_OF_RECORDS,
-        );
-      }
+    _homePresenter.usersNotifier.addListener(() {
+      final users = _homePresenter.usersNotifier.value;
+      _paginationController.addItems(
+        users,
+        isStopLoadMore: users.length < Limit.NUMBER_OF_RECORDS,
+      );
     });
-  }
-
-  @override
-  void dispose() {
-    _homePresenter.onDestroy();
-    super.dispose();
   }
 
   @override
@@ -53,12 +45,17 @@ class _HomePageState extends State<HomePage> {
           // No-op
         },
         onLoad: (currentPosition) {
-          _homePresenter.fetchUserBloc.fetch("vuphu", currentPosition);
+          _homePresenter.fetchUsers("vuphu", currentPosition);
         },
         blankDataView: BlankDataView(),
         onCreateView: (index, item) {
-          if (item is GithubUser) {
-            return GithubUserWidget(data: item);
+          if (item is User) {
+            return Column(
+              children: [
+                SizedBox(height: 10),
+                UserWidget(data: item),
+              ],
+            );
           }
           return Container();
         },

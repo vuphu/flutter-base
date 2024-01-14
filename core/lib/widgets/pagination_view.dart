@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PaginationView extends StatefulWidget {
   final Function(int index, dynamic item)? onTap;
@@ -19,15 +18,15 @@ class PaginationView extends StatefulWidget {
   }) : super();
 
   @override
-  State<StatefulWidget> createState() => _PaginationViewState();
+  _PaginationViewState createState() => _PaginationViewState();
 }
 
-class PaginationViewController extends Cubit<int> {
-  PaginationViewController() : super(0);
-
+class PaginationViewController extends ValueNotifier<int> {
   List _items = [];
   bool _isLoading = true;
   bool _isStopLoadMore = false;
+
+  PaginationViewController() : super(0);
 
   void addItems(List items, {bool? isStopLoadMore}) {
     _isLoading = false;
@@ -50,7 +49,7 @@ class PaginationViewController extends Cubit<int> {
     render();
   }
 
-  void render() => emit(state + 1);
+  void render() => value += 1;
 }
 
 class _PaginationViewState extends State<PaginationView> {
@@ -64,9 +63,9 @@ class _PaginationViewState extends State<PaginationView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
-      bloc: widget.controller,
-      builder: (context, state) => _buildListOfItems(),
+    return ValueListenableBuilder(
+      valueListenable: widget.controller,
+      builder: (context, _, __) => _buildListOfItems(),
     );
   }
 
