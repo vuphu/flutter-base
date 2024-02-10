@@ -1,16 +1,21 @@
 # flutter-base-structure
 
+- **Install**
+```shell
+sh scripts/pub-get.sh
+```
+
 - **Build runner**
 
 ```shell
-cd core
+cd packages/core
 flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
 
 - **Run on web**
 
 ```shell
-cd web_app
+cd packages/web-app
 flutter run -d edge (chrome)
 ```
 
