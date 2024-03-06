@@ -11,6 +11,10 @@ sh scripts/pub-get.sh
 cd packages/core
 flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
+or
+```shell
+sh scripts/build-runner.sh
+```
 
 - **Run on web**
 
