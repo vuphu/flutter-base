@@ -23,5 +23,5 @@ cd packages/web-app
 flutter run -d edge (chrome)
 ```
 
-![Demo mobile_app](resources/demo_mobile_app.gif)
-![Demo web app](resources/demo_web_app.gif)
+![Demo mobile app](resources/demo-mobile.gif)
+![Demo web app](resources/demo-web.gif)
