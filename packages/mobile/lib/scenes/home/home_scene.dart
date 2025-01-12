@@ -1,5 +1,5 @@
 import 'package:core/config/constants/limit.dart';
-import 'package:core/modules/users/models/user.dart';
+import 'package:core/modules/users/user_module.dart';
 import 'package:core/widgets/blank_data_view.dart';
 import 'package:core/widgets/pagination_view.dart';
 import 'package:flutter/material.dart';
@@ -49,11 +49,11 @@ class _HomePageState extends State<HomePage> {
         },
         blankDataView: BlankDataView(),
         onCreateView: (index, item) {
-          if (item is User) {
+          if (item is UserResponse) {
             return Column(
               children: [
                 SizedBox(height: 10),
-                UserWidget(data: item),
+                UserWidget(user: item),
               ],
             );
           }

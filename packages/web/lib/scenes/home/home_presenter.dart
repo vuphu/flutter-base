@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 class HomePresenter extends BasePresenter with WrapErrorMixin {
   late UserService _userService;
 
-  late ValueNotifier<List<User>> usersNotifier;
+  late ValueNotifier<List<UserResponse>> usersNotifier;
 
   @override
   void onStart() {
