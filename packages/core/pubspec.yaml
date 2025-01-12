@@ -8,13 +8,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  equatable: ^2.0.5
-  get_it: ^7.2.0
-  injectable: ^2.1.0
-  graphql_flutter: ^5.1.2
-  gql: ^0.14.0
-  json_annotation: ^4.8.0
-  http: ^0.13.5
+  get_it: ^8.0.3
+  injectable: ^2.5.0
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:

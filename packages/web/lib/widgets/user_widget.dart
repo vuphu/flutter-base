@@ -1,13 +1,13 @@
-import 'package:core/modules/users/models/user.dart';
+import 'package:core/modules/users/user_module.dart';
 import 'package:flutter/material.dart';
 
 class UserWidget extends StatefulWidget {
   UserWidget({
     Key? key,
-    required this.data,
+    required this.user,
   }) : super(key: key);
 
-  final User data;
+  final UserResponse user;
 
   @override
   _UserWidgetState createState() => _UserWidgetState();
@@ -20,9 +20,9 @@ class _UserWidgetState extends State<UserWidget> {
       padding: const EdgeInsets.all(4),
       child: InkWell(
         child: ListTile(
-          title: Text(widget.data.login),
-          subtitle: Text(widget.data.id.toString()),
-          leading: Image.network(widget.data.avatarUrl),
+          title: Text(widget.user.login),
+          subtitle: Text(widget.user.id.toString()),
+          leading: Image.network(widget.user.avatarUrl),
         ),
         onTap: () {},
       ),
