@@ -1,4 +1,4 @@
-# flutter-base-structure
+A Flutter base project with essential boilerplate code for development.
 
 - **Install**
 ```shell
@@ -7,11 +7,6 @@ sh scripts/pub-get.sh
 
 - **Build runner**
 
-```shell
-cd packages/core
-flutter packages pub run build_runner build --delete-conflicting-outputs
-```
-or
 ```shell
 sh scripts/build-runner.sh
 ```
