@@ -1,74 +1,83 @@
-import 'package:core/config/constants/limit.dart';
-import 'package:core/modules/users/user_module.dart';
-import 'package:core/widgets/blank_data_view.dart';
-import 'package:core/widgets/pagination_view.dart';
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/user_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../common/constants/constants.dart';
+import '../../common/widgets/pagination_view.dart';
 import 'home_presenter.dart';
+import 'widgets/widgets.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
-
-  final String title;
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  ConsumerState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late PaginationViewController _paginationController;
-  late HomePresenter _homePresenter;
+class _HomePageState extends ConsumerState<HomePage> {
+  final HomePresenter _presenter = HomePresenter();
+  final String _searchText = "vuphu";
+  int _currentPage = 1;
 
   @override
   void initState() {
     super.initState();
-    _paginationController = PaginationViewController();
-    _homePresenter = HomePresenter()..onStart();
+    _presenter.onStart(context);
+    _presenter.setRef(ref);
 
-    _homePresenter.usersNotifier.addListener(() {
-      final users = _homePresenter.usersNotifier.value;
-      _paginationController.addItems(
-        users,
-        isStopLoadMore: users.length < Limit.NUMBER_OF_RECORDS,
-      );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _presenter.fetchUsers(_searchText, _currentPage);
     });
   }
 
   @override
   void dispose() {
-    _homePresenter.onDestroy();
+    _presenter.onDestroy();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 500),
-          child: PaginationView(
-            onTap: (index, item) {
-              // No-op
-            },
-            onLoad: (currentPosition) {
-              _homePresenter.fetchUsers("vuphu", currentPosition);
-            },
-            blankDataView: BlankDataView(),
-            onCreateView: (index, item) {
-              if (item is UserResponse) {
-                return UserWidget(user: item);
-              }
-              return Container();
-            },
-            controller: _paginationController,
-            isAutoLoading: true,
+      body: Column(
+        children: [
+          Expanded(
+            child: ref
+                .watch(_presenter.usersProvider)
+                .when(
+                  data:
+                      (pagination) =>
+                          SizedBox(width: 500, child: UsersTable(users: pagination.items)),
+                  error: (_, __) => Center(child: const CircularProgressIndicator()),
+                  loading: () => Center(child: const CircularProgressIndicator()),
+                ),
           ),
-        ),
+          _buildPagination(ref.watch(_presenter.usersCountProvider)),
+        ],
       ),
+    );
+  }
+
+  Widget _buildPagination(int totalCount) {
+    int pageRange = 3;
+    int totalPages = 1 + totalCount ~/ kDefaultPageLimit;
+    int startPage = (_currentPage - pageRange > 0) ? _currentPage - pageRange : 1;
+    int endPage = (_currentPage + pageRange < totalPages) ? _currentPage + pageRange : totalPages;
+
+    paginateProducts(int page) async {
+      if (_currentPage == page) {
+        return;
+      }
+      _currentPage = page;
+      await _presenter.fetchUsers(_searchText, _currentPage);
+    }
+
+    return PaginationView(
+      currentPage: _currentPage,
+      startPage: startPage,
+      endPage: endPage,
+      totalPages: totalPages,
+      onPageChanged: paginateProducts,
+      primaryColor: Theme.of(context).primaryColor,
     );
   }
 }

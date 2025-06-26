@@ -1,34 +1,33 @@
-import 'package:core/common/base/presenter.dart';
+import 'package:core/common/mixins/presenter_mixin.dart';
 import 'package:core/di/di.dart';
-import 'package:core/modules/users/user_module.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:core/config/constants/limit.dart';
+import 'package:core/modules/github/github_module.dart';
+import 'package:core/packages/view_models/view_models.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePresenter extends BasePresenter with WrapErrorMixin {
-  late UserService _userService;
+import '../../common/constants/constants.dart';
 
-  late ValueNotifier<List<UserResponse>> usersNotifier;
+class HomePresenter extends BasePresenter with RiverpodExecution, PresenterMixin {
+  final GithubService _githubService = getIt<GithubService>();
 
-  @override
-  void onStart() {
-    super.onStart();
-    _userService = getIt<UserService>();
-    usersNotifier = ValueNotifier([]);
-  }
-
-  @override
-  void onDestroy() {
-    super.onDestroy();
-  }
+  final usersProvider =
+      StateProvider<AsyncValue<List<UserResponse>>>((ref) => AsyncValue.loading());
 
   Future<void> fetchUsers(String query, int currentPosition) async {
-    await wrapError(
-      () => _userService.getGithubUsers(
-        query,
-        currentPosition,
-        Limit.NUMBER_OF_RECORDS,
-      ),
-      onSuccess: (data) => usersNotifier.value = data,
+    SearchUsersRequest request = SearchUsersRequest(
+      q: query,
+      page: 1 + currentPosition ~/ kDefaultPageLimit,
+      perPage: kDefaultPageLimit,
+    );
+    await execute(
+      () async {
+        final pagination = await _githubService.searchUsers(request);
+        return pagination.items;
+      },
+      usersProvider,
+      onError: (message) {
+        print(message);
+        toastError(message);
+      },
     );
   }
 }

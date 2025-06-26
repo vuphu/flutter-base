@@ -18,5 +18,6 @@ cd packages/web
 flutter run -d edge (chrome)
 ```
 
-![Demo mobile app](resources/demo-mobile.gif)
-![Demo web app](resources/demo-web.gif)
+<img src="resources/demo-mobile.png" alt="demo-mobile" width="300"/>
+
+![Demo web app](resources/demo-web.png)
