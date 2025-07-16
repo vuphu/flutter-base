@@ -1,12 +1,11 @@
-import 'package:core/common/mixins/presenter_mixin.dart';
 import 'package:core/di/di.dart';
-import 'package:core/modules/github/github_module.dart';
-import 'package:core/packages/view_models/view_models.dart';
+import 'package:core/modules/github.dart';
+import 'package:core/packages/data_binder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/constants/constants.dart';
 
-class HomePresenter extends BasePresenter with RiverpodExecution, PresenterMixin {
+class HomePresenter extends DataBinder with RiverpodExecution, UIHandler {
   final GithubService _githubService = getIt<GithubService>();
 
   final usersProvider =

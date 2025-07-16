@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/constants/constants.dart';
 import '../../common/widgets/pagination_view.dart';
 import 'home_presenter.dart';
-import 'widgets/widgets.dart';
+import 'widgets/users_table.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -44,9 +44,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: ref
                 .watch(_presenter.usersProvider)
                 .when(
-                  data:
-                      (pagination) =>
-                          SizedBox(width: 500, child: UsersTable(users: pagination.items)),
+                  data: (pagination) {
+                    return SizedBox(width: 500, child: UsersTable(users: pagination.items));
+                  },
                   error: (_, __) => Center(child: const CircularProgressIndicator()),
                   loading: () => Center(child: const CircularProgressIndicator()),
                 ),

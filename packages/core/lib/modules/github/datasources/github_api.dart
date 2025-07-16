@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:core/modules/github/dtos/responses/response.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../common/helpers/helpers.dart';
+import '../../../common/helpers.dart';
 import '../constants/endpoints.dart';
-import '../dtos/requests/request.dart';
+import '../dtos/requests/search_users_request.dart';
+import '../dtos/responses/pagination_response.dart';
 import '../dtos/responses/user_response.dart';
 
 abstract class GithubAPI {

@@ -1,19 +1,22 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-abstract class BasePresenter {
-  late BuildContext? context;
+import '../../common/widgets.dart';
+import 'data_binder.dart';
 
-  void onStart(BuildContext context) {
-    this.context = context;
-  }
-
-  void onDestroy() {
-    this.context = null;
+mixin UIHandler on DataBinder {
+  Future<void> toastError(String message) async {
+    FToast()
+      ..init(context!)
+      ..showToast(
+        child: ErrorToast(message: message),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 2),
+      );
   }
 }
 
-mixin RiverpodExecution on BasePresenter {
+mixin RiverpodExecution on DataBinder {
   late WidgetRef? ref;
 
   void setRef(WidgetRef ref) {
@@ -27,10 +30,10 @@ mixin RiverpodExecution on BasePresenter {
   }
 
   Future<void> execute<T>(
-    Future<T> Function() action,
-    StateProvider<AsyncValue<T>> provider, {
-    void Function(String error)? onError,
-  }) async {
+      Future<T> Function() action,
+      StateProvider<AsyncValue<T>> provider, {
+        void Function(String error)? onError,
+      }) async {
     final notifier = ref!.read(provider.notifier);
     notifier.state = AsyncValue.loading();
     try {

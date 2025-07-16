@@ -1,13 +1,13 @@
-import 'package:core/modules/github/github_module.dart';
+import 'package:core/modules/github.dart';
 import 'package:flutter/material.dart';
 
 class UserWidget extends StatefulWidget {
-  UserWidget({Key? key, required this.user}) : super(key: key);
+  const UserWidget({super.key, required this.user});
 
   final UserResponse user;
 
   @override
-  _UserWidgetState createState() => _UserWidgetState();
+  State<UserWidget> createState() => _UserWidgetState();
 }
 
 class _UserWidgetState extends State<UserWidget> {
