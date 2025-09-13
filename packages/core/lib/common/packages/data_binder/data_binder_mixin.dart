@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../common/widgets.dart';
+import '../../widgets/toasts/error_toast.dart';
 import 'data_binder.dart';
 
 mixin UIHandler on DataBinder {

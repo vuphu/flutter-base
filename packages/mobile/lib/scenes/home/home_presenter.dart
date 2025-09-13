@@ -1,6 +1,6 @@
 import 'package:core/di/di.dart';
 import 'package:core/modules/github.dart';
-import 'package:core/packages/data_binder.dart';
+import 'package:core/common/packages/data_binder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/constants/constants.dart';
