@@ -14,7 +14,7 @@ sh scripts/build-runner.sh
 - **Run on web**
 
 ```shell
-cd packages/web
+cd apps/web
 flutter run -d edge (chrome)
 ```
 
