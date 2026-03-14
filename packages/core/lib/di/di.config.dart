@@ -27,7 +27,8 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.singleton<_i317.GithubAPI>(() => _i317.GithubAPIImpl());
-    gh.singleton<_i164.GithubService>(() => _i164.GithubServiceImpl(gh<_i651.GithubAPI>()));
+    gh.singleton<_i164.GithubService>(
+        () => _i164.GithubServiceImpl(gh<_i651.GithubAPI>()));
     return this;
   }
 }

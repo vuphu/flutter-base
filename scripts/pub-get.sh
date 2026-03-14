@@ -1,13 +1,9 @@
 #! /bin/bash
 
-packages_path="$(pwd)/packages"
-
-cd "$packages_path" || exit
-
-for subfolder in */; do
-    if [ -d "$subfolder" ]; then
-        cd "$subfolder" || exit
-        flutter pub get
-        cd "$packages_path" || exit
-    fi
+for path in packages apps; do
+  for dir in "$path"/*/; do
+    [ -f "$dir/pubspec.yaml" ] || continue
+    echo "Running pub get in: $dir"
+    (cd "$dir" && flutter pub get)
+  done
 done
